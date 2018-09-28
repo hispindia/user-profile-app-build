@@ -8,16 +8,16 @@
   },
   "appType": "APP",
   "name": "DHIS2 User Profile Management",
-  "version": "30.0.0",
+  "version": "31.0.0",
   "description": "User Profile App for DHIS2",
   "developer": {
     "name": "Adheesh Bhatia"
   },
   "dhis2": {
-    "apiVersion": "29"
+    "apiVersion": "31"
   },
   "icons": {
     "48": "icon.png"
   },
-  "manifest_generated_at": "Mon Aug 27 2018 16:47:22 GMT+0000 (UTC)"
+  "manifest_generated_at": "Fri Sep 28 2018 15:47:16 GMT+0000 (UTC)"
 }
