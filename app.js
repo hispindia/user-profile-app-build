@@ -12077,6 +12077,27 @@
             type: "textfield",
             multiLine: !0
         },
+        whatsApp: {
+            label: "whats_app",
+            type: "textfield",
+            validators: [ "whats_app" ]
+        },
+        facebookMessenger: {
+            label: "facebook_messenger",
+            type: "textfield"
+        },
+        skype: {
+            label: "skype",
+            type: "textfield"
+        },
+        telegram: {
+            label: "telegram",
+            type: "textfield"
+        },
+        twitter: {
+            label: "twitter",
+            type: "textfield"
+        },
         accountEditor: {
             label: "account_editor",
             type: "accountEditor"
@@ -25296,33 +25317,35 @@
             if (Symbol.iterator in Object(t)) return e(t, n);
             throw new TypeError("Invalid attempt to destructure non-iterable instance");
         };
-    }(), a = n(25), u = r(a), s = n(116), l = n(153), c = r(l), f = n(320), d = n(67), p = r(d), h = n(79), y = r(h), v = n(322), m = r(v), b = c.default.createActionsFromNames([ "save" ]);
-    b.save.subscribe(function(e) {
-        var t = e.data, n = e.complete, r = e.error, a = i(t, 2), l = a[0], c = a[1], d = o({}, l, String(c).trim() || " ");
+    }(), a = n(25), u = r(a), s = n(116), l = n(153), c = r(l), f = n(67), d = r(f), p = n(79), h = r(p), y = n(322), v = r(y), m = n(320), b = n(1663), g = r(b);
+    m.wordToValidatorMap.set("whats_app", g.default);
+    var _ = c.default.createActionsFromNames([ "save" ]);
+    _.save.subscribe(function(e) {
+        var t = e.data, n = e.complete, r = e.error, a = i(t, 2), l = a[0], c = a[1], f = o({}, l, String(c).trim() || " ");
         if ("birthday" === l) {
-            var h = new Date(c);
-            d = o({}, l, h.toISOString());
+            var p = new Date(c);
+            f = o({}, l, p.toISOString());
         }
         (0, s.getInstance)().then(function(e) {
-            if (y.default.state[l] = c, y.default.setState(y.default.state), Array.isArray(m.default[l].validators)) {
-                if (!m.default[l].validators.reduce(function(e, t) {
-                    return e && f.wordToValidatorMap.get(t)(c);
+            if (h.default.state[l] = c, h.default.setState(h.default.state), Array.isArray(v.default[l].validators)) {
+                if (!v.default[l].validators.reduce(function(e, t) {
+                    return e && m.wordToValidatorMap.get(t)(c);
                 }, !0)) return void u.default.warn('One or more validators did not pass for field "' + l + '" and value "' + c + '"');
             }
-            var t = e.Api.getApi(), o = "avatar" === l ? "patch" : "update", i = "avatar" === l ? "/users/" + y.default.state.id : "me";
-            t[o](i, d).then(function() {
-                u.default.debug("User Profile updated successfully."), p.default.showSnackbarMessage({
+            var t = e.Api.getApi(), o = "avatar" === l ? "patch" : "update", i = "avatar" === l ? "/users/" + h.default.state.id : "me";
+            t[o](i, f).then(function() {
+                u.default.debug("User Profile updated successfully."), d.default.showSnackbarMessage({
                     message: e.i18n.getTranslation("update_user_profile_success"),
                     status: "success"
                 }), n();
             }).catch(function(t) {
-                p.default.showSnackbarMessage({
+                d.default.showSnackbarMessage({
                     message: e.i18n.getTranslation("update_user_profile_fail"),
                     status: "error"
                 }), u.default.error("Failed to update user profile:", t), r();
             });
         });
-    }), t.default = b;
+    }), t.default = _;
 }, function(e, t, n) {
     "use strict";
     function r(e) {
@@ -25390,7 +25413,7 @@
         p.config.i18n.sources.add("i18n/module/i18n_module_en.properties");
     }
     var i = n(0), a = r(i), u = n(19), s = r(u), l = n(25), c = r(l), f = n(197), d = r(f), p = n(116), h = n(755), y = r(h), v = n(67), m = r(v), b = n(195), g = r(b);
-    n(1678);
+    n(1679);
     s.default.render(a.default.createElement(d.default, {
         theme: g.default
     }, a.default.createElement(y.default, null)), document.getElementById("app")), (0, 
@@ -41064,7 +41087,7 @@
         return function(t, n, r) {
             return n && e(t.prototype, n), r && e(t, r), t;
         };
-    }(), l = n(0), c = r(l), f = n(1), d = r(f), p = n(373), h = n(197), y = r(h), v = n(1081), m = r(v), b = n(195), g = r(b), _ = n(1648), w = r(_), x = n(1649), k = r(x), S = n(1651), C = r(S), O = n(1663), T = r(O), E = n(1664), P = r(E), M = n(1672), j = r(M), A = n(1674), D = r(A), R = n(1676), I = r(R);
+    }(), l = n(0), c = r(l), f = n(1), d = r(f), p = n(373), h = n(197), y = r(h), v = n(1081), m = r(v), b = n(195), g = r(b), _ = n(1648), w = r(_), x = n(1649), k = r(x), S = n(1651), C = r(S), O = n(1664), T = r(O), E = n(1665), P = r(E), M = n(1673), j = r(M), A = n(1675), D = r(A), R = n(1677), I = r(R);
     u.propTypes = {
         routes: d.default.array.isRequired,
         children: d.default.any.isRequired
@@ -64499,7 +64522,7 @@
         };
     }
     function o(e, t) {
-        var n = [ "firstName", "surname", "email", "avatar", "phoneNumber", "introduction", "jobTitle", "gender", "birthday", "nationality", "employer", "education", "interests", "languages" ], r = t.d2.i18n.getTranslation("edit_user_profile");
+        var n = [ "firstName", "surname", "email", "avatar", "phoneNumber", "introduction", "jobTitle", "gender", "birthday", "nationality", "employer", "education", "interests", "languages", "whatsApp", "facebookMessenger", "skype", "telegram", "twitter" ], r = t.d2.i18n.getTranslation("edit_user_profile");
         return a.default.createElement(c.default, {
             pageLabel: r,
             fieldKeys: n,
@@ -68542,6 +68565,16 @@
 }, function(e, t, n) {
     "use strict";
     function r(e) {
+        return !e || o.test(e);
+    }
+    Object.defineProperty(t, "__esModule", {
+        value: !0
+    }), t.default = r;
+    var o = /^[+][0-9]{10}$/;
+    r.message = "invalid_whats_app";
+}, function(e, t, n) {
+    "use strict";
+    function r(e) {
         return e && e.__esModule ? e : {
             default: e
         };
@@ -68601,7 +68634,7 @@
         return function(t, n, r) {
             return n && e(t.prototype, n), r && e(t, r), t;
         };
-    }(), s = n(0), l = r(s), c = n(1), f = r(c), d = n(1665), p = r(d), h = n(1669), y = r(h), v = n(1670), m = r(v), b = n(1671), g = r(b), _ = n(79), w = r(_), x = n(659), k = r(x), S = {
+    }(), s = n(0), l = r(s), c = n(1), f = r(c), d = n(1666), p = r(d), h = n(1670), y = r(h), v = n(1671), m = r(v), b = n(1672), g = r(b), _ = n(79), w = r(_), x = n(659), k = r(x), S = {
         header: {
             fontSize: 24,
             fontWeight: 300,
@@ -68715,7 +68748,7 @@
         return function(t, n, r) {
             return n && e(t.prototype, n), r && e(t, r), t;
         };
-    }(), s = n(0), l = r(s), c = n(1), f = r(c), d = n(1666), p = r(d), h = n(323), y = r(h), v = {
+    }(), s = n(0), l = r(s), c = n(1), f = r(c), d = n(1667), p = r(d), h = n(323), y = r(h), v = {
         guideHeader: {
             fontWeight: 300,
             padding: "24px 16px 24px 16px"
@@ -68763,7 +68796,7 @@
     Object.defineProperty(t, "__esModule", {
         value: !0
     });
-    var o = n(0), i = r(o), a = n(1), u = r(a), s = n(60), l = n(1667), c = r(l), f = n(1668), d = r(f), p = {
+    var o = n(0), i = r(o), a = n(1), u = r(a), s = n(60), l = n(1668), c = r(l), f = n(1669), d = r(f), p = {
         downloadGuideWrapper: {
             display: "flex",
             flexDirection: "row",
@@ -69026,7 +69059,7 @@
     Object.defineProperty(t, "__esModule", {
         value: !0
     });
-    var i = n(0), a = r(i), u = n(1), s = r(u), l = n(319), c = r(l), f = n(1673), d = r(f), p = n(196), h = r(p);
+    var i = n(0), a = r(i), u = n(1), s = r(u), l = n(319), c = r(l), f = n(1674), d = r(f), p = n(196), h = r(p);
     o.contextTypes = {
         d2: s.default.object.isRequired
     }, t.default = o;
@@ -69077,7 +69110,7 @@
     Object.defineProperty(t, "__esModule", {
         value: !0
     });
-    var i = n(0), a = r(i), u = n(1), s = r(u), l = n(1675), c = r(l), f = n(79), d = r(f);
+    var i = n(0), a = r(i), u = n(1), s = r(u), l = n(1676), c = r(l), f = n(79), d = r(f);
     o.contextTypes = {
         d2: s.default.object.isRequired
     }, t.default = o;
@@ -69281,7 +69314,7 @@
     Object.defineProperty(t, "__esModule", {
         value: !0
     });
-    var u = n(0), s = r(u), l = n(1), c = r(l), f = n(1677), d = r(f), p = {
+    var u = n(0), s = r(u), l = n(1), c = r(l), f = n(1678), d = r(f), p = {
         systemInfo: [ "version", "revision", "buildTime", "osName", "osVersion", "osArchitecture", "serverDate", "cpuCores", "memoryInfo", "javaVersion", "lastAnalyticsTableRuntime", "lastAnalyticsTableSuccess", "fileStoreProvider", "jasperReportsVersion", "calendar", "cacheProvider", "userAgent" ],
         databaseInfo: [ "name", "user", "type" ]
     }, h = function(e) {
@@ -69360,7 +69393,7 @@
         })).isRequired
     }, t.default = h;
 }, function(e, t, n) {
-    var r = n(1679);
+    var r = n(1680);
     "string" == typeof r && (r = [ [ e.i, r, "" ] ]);
     var o = {
         hmr: !0
