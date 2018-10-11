@@ -2637,9 +2637,7 @@
                         id: e.locale,
                         displayName: e.name
                     };
-                }), a = Object.keys(t[3]), s = Object.keys(t[4]).filter(function(e) {
-                    return -1 !== a.indexOf(e);
-                }).reduce(function(e, n) {
+                }), a = Object.keys(t[4]).reduce(function(e, n) {
                     return e[n] = t[4][n], e;
                 }, {});
                 m.default.setState(e.currentUser), m.default.state.qrCodeUrl = t[5].url, g.default.setState(t[3]), 
@@ -2647,7 +2645,7 @@
                     styles: n,
                     uiLocales: r,
                     dbLocales: o,
-                    systemDefault: s
+                    systemDefault: a
                 }), l.default.debug("Current user profile loaded:", m.default.state), l.default.debug("Current user settings loaded:", g.default.state), 
                 u.default.render(i.default.createElement(y.default, {
                     d2: e
@@ -11620,22 +11618,26 @@
         });
     }
     function d(e, t, n, r, o) {
-        var i = r.state[t] || !1 === r.state[t] ? r.state[t].toString() : "null", a = (o.source ? H.default.state && H.default.state[o.source] || [] : Object.keys(o.options).map(function(e) {
+        var i = r.state[t] || !1 === r.state[t] ? r.state[t].toString() : o.showSystemDefault ? "system_default" : "null", a = (o.source ? H.default.state && H.default.state[o.source] || [] : Object.keys(o.options).map(function(e) {
             return {
                 id: e,
                 displayName: isNaN(o.options[e]) ? n.i18n.getTranslation(o.options[e]) : o.options[e]
             };
-        })).slice(), u = H.default.state && H.default.state.systemDefault && H.default.state.systemDefault[t], s = H.default.state[o.source] ? H.default.state[o.source].filter(function(e) {
+        })).slice(), u = H.default.state && H.default.state.systemDefault && H.default.state.systemDefault[t], s = void 0;
+        return s = "boolean" == typeof u ? n.i18n.getTranslation(u.toString()) : H.default.state[o.source] ? H.default.state[o.source].filter(function(e) {
             return e.id === u;
         }).map(function(e) {
             return e.displayName;
-        })[0] || n.i18n.getTranslation("no_value") : n.i18n.getTranslation("null" === u ? "no_value" : u);
-        return Object.assign({}, e, {
+        })[0] || n.i18n.getTranslation("no_value") : "null" === u || "system_default" === u || void 0 === u ? n.i18n.getTranslation("no_value") : u, 
+        o.showSystemDefault && a.unshift({
+            id: "system_default",
+            displayName: n.i18n.getTranslation("use_system_default") + " (" + s + ")"
+        }), Object.assign({}, e, {
             component: M.default,
             value: i,
             props: Object.assign({}, e.props, {
                 includeEmpty: !!o.includeEmpty,
-                emptyLabel: o.includeEmpty ? n.i18n.getTranslation("use_system_default") + " (" + s + ")" : void 0,
+                emptyLabel: o.includeEmpty ? n.i18n.getTranslation(o.emptyLabel) : void 0,
                 noOptionsLabel: n.i18n.getTranslation("no_options")
             }, {
                 menuItems: a
@@ -12106,24 +12108,18 @@
             label: "language",
             type: "dropdown",
             source: "uiLocales",
-            includeEmpty: !0,
-            emptyLabel: "use_system_default",
             showSystemDefault: !0
         },
         keyDbLocale: {
             label: "db_language",
             type: "dropdown",
             source: "dbLocales",
-            includeEmpty: !0,
-            emptyLabel: "use_system_default",
             showSystemDefault: !0
         },
         keyStyle: {
             label: "style",
             type: "dropdown",
             source: "styles",
-            includeEmpty: !0,
-            emptyLabel: "use_system_default",
             showSystemDefault: !0
         },
         keyAnalysisDisplayProperty: {
@@ -12133,8 +12129,6 @@
                 name: "name",
                 shortName: "short_name"
             },
-            includeEmpty: !0,
-            emptyLabel: "use_system_default",
             showSystemDefault: !0
         },
         keyMessageEmailNotification: {
@@ -12143,10 +12137,7 @@
             options: {
                 true: "true_notifications",
                 false: "false_notifications"
-            },
-            includeEmpty: !0,
-            emptyLabel: "use_system_default",
-            showSystemDefault: !0
+            }
         },
         keyMessageSmsNotification: {
             label: "enable_message_sms_notifications",
@@ -12154,10 +12145,7 @@
             options: {
                 true: "true_notifications",
                 false: "false_notifications"
-            },
-            includeEmpty: !0,
-            emptyLabel: "use_system_default",
-            showSystemDefault: !0
+            }
         }
     };
     t.default = r;
@@ -24869,7 +24857,7 @@
                 var r = this.getFieldProp(t), o = (r.validators || []).reduce(function(t, r) {
                     return !0 === t ? !0 === r.validator(n, e) || r.message : t;
                 }, !0);
-                return this.updateFieldState(e, t, {
+                return Object(d.get)(r, "fieldOptions.disabled") && (o = !0), this.updateFieldState(e, t, {
                     valid: !0 === o,
                     error: !0 === o ? void 0 : o
                 }), o;
@@ -24983,20 +24971,25 @@
                 var e = this.props, t = (e.changeEvent, r(e, [ "changeEvent" ])), n = {
                     lineHeight: this.props.multiLine ? "48px" : "12px",
                     marginTop: this.props.multiLine ? -16 : 0
-                };
+                }, o = "search" === t.type ? {
+                    WebkitAppearance: "textfield"
+                } : {};
                 return s.a.createElement(d.a, p({
                     errorStyle: n
                 }, t, {
                     value: this.state.value,
-                    onChange: this.change
+                    onChange: this.change,
+                    inputStyle: o
                 }));
             }
         } ]), t;
     }(u.Component);
     y.propTypes = {
+        changeEvent: c.a.any,
         value: c.a.string,
         multiLine: c.a.bool
     }, y.defaultProps = {
+        changeEvent: "onBlur",
         value: "",
         multiLine: !1
     }, t.default = y;
@@ -64474,7 +64467,8 @@
                         primaryText: t.label,
                         onClick: e.setSection.bind(e, t.key),
                         style: n,
-                        leftIcon: r
+                        leftIcon: r,
+                        containerElement: t.containerElement
                     });
                 }));
             }
@@ -64492,10 +64486,11 @@
         sections: l.a.arrayOf(l.a.shape({
             key: l.a.string,
             label: l.a.string,
+            containerElement: l.a.object,
             icon: l.a.oneOfType([ l.a.string, l.a.element ])
         })).isRequired,
         currentSection: l.a.string,
-        onChangeSection: l.a.func.isRequired,
+        onChangeSection: l.a.func,
         onSectionClick: l.a.func,
         showSearchField: l.a.bool,
         searchFieldLabel: l.a.string,
@@ -67925,10 +67920,16 @@
         var t = e.menuItems, n = e.includeEmpty, r = e.emptyLabel, i = t.map(function(e) {
             return o(e.id, e.displayName);
         });
-        return n && i.unshift(o({
-            value: "null",
-            text: r
-        })), i;
+        if (n) {
+            var a = f.a.createElement(y.a, {
+                primaryText: r,
+                key: "no_value",
+                value: null,
+                label: " "
+            });
+            i.unshift(a);
+        }
+        return i;
     }
     function a(e) {
         return function(t, n, r) {
@@ -69075,7 +69076,7 @@
     });
     var o = n(25), i = r(o), a = n(153), u = r(a), s = n(116), l = n(67), c = r(l), f = n(196), d = r(f), p = u.default.createActionsFromNames([ "save" ]);
     p.save.subscribe(function(e) {
-        var t = e.data, n = e.complete, r = e.error, o = t[0], a = "null" === t[1] ? null : t[1];
+        var t = e.data, n = e.complete, r = e.error, o = t[0], a = "null" === t[1] || "system_default" === t[1] ? null : t[1];
         (0, s.getInstance)().then(function(e) {
             e.currentUser.userSettings.set(o, a).then(function() {
                 d.default.state[o] = a, d.default.setState(d.default.state), i.default.debug("User Setting updated successfully."), 
