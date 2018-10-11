@@ -9,8 +9,5 @@
   ],
   "author": "Adheesh Bhatia",
   "license": "BSD-3-Clause",
-  "directories": {
-    "test": "test"
-  },
   "homepage": "https://github.com/dhis2/dhis-user-profile-app"
 }

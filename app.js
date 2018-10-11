@@ -68570,7 +68570,7 @@
     Object.defineProperty(t, "__esModule", {
         value: !0
     }), t.default = r;
-    var o = /^[+][0-9]{10}$/;
+    var o = /^\+(?:[0-9].?){4,14}[0-9]$/;
     r.message = "invalid_whats_app";
 }, function(e, t, n) {
     "use strict";
