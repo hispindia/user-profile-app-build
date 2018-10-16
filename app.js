@@ -25362,7 +25362,7 @@
     };
     s.propTypes = {
         label: u.default.string.isRequired,
-        value: u.default.oneOfType([ u.default.string, u.default.number ]).isRequired,
+        value: u.default.node.isRequired,
         labelStyle: u.default.object
     }, s.defaultProps = {
         labelStyle: {}
@@ -69315,44 +69315,93 @@
     Object.defineProperty(t, "__esModule", {
         value: !0
     });
-    var u = n(0), s = r(u), l = n(1), c = r(l), f = n(1678), d = r(f), p = {
-        systemInfo: [ "version", "revision", "buildTime", "osName", "osVersion", "osArchitecture", "serverDate", "cpuCores", "memoryInfo", "javaVersion", "lastAnalyticsTableRuntime", "lastAnalyticsTableSuccess", "fileStoreProvider", "jasperReportsVersion", "calendar", "cacheProvider", "userAgent" ],
-        databaseInfo: [ "name", "user", "type" ]
-    }, h = function(e) {
+    var u = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function(e) {
+        return typeof e;
+    } : function(e) {
+        return e && "function" == typeof Symbol && e.constructor === Symbol && e !== Symbol.prototype ? "symbol" : typeof e;
+    }, s = n(0), l = r(s), c = n(1), f = r(c), d = n(1678), p = r(d), h = function(e, t) {
+        var n = t.currentUser.userSettings.settings.keyUiLocale, r = new Date(e), o = {
+            day: "numeric",
+            month: "long",
+            year: "numeric",
+            hour: "2-digit",
+            minute: "2-digit",
+            hour12: !1
+        };
+        return new Intl.DateTimeFormat(n, o).format(r);
+    }, y = {
+        systemInfo: [ {
+            label: "web_api",
+            getDisplayValue: function(e, t, n) {
+                return l.default.createElement("a", {
+                    target: "_blank",
+                    href: t.system.systemInfo.contextPath + "/api"
+                }, n("browse_it_here"));
+            }
+        }, {
+            label: "current_user",
+            getDisplayValue: function(e, t) {
+                return t.currentUser.username;
+            }
+        }, "version", "revision", {
+            label: "buildTime",
+            getDisplayValue: function(e, t) {
+                return h(e, t);
+            }
+        }, "jasperReportsVersion", "userAgent", {
+            label: "serverDate",
+            getDisplayValue: function(e, t) {
+                return h(e, t);
+            }
+        }, {
+            label: "lastAnalyticsTableSuccess",
+            getDisplayValue: function(e, t) {
+                return h(e, t);
+            }
+        }, "intervalSinceLastAnalyticsTableSuccess", "lastAnalyticsTableRuntime", "environmentVariable", "systemId", {
+            label: "lastSystemMonitoringSuccess",
+            getDisplayValue: function(e, t) {
+                return h(e, t);
+            }
+        }, "externalDirectory", "fileStoreProvider", "nodeId", "cacheProvider", "readReplicaCount", "javaOpts", "javaVersion", "javaVendor", "osName", "osArchitecture", "osVersion", "memoryInfo", "cpuCores", "calendar" ],
+        databaseInfo: [ "name", "user", "spatialSupport" ]
+    }, v = function(e) {
         function t() {
             var e, n, r, a;
             o(this, t);
-            for (var u = arguments.length, l = Array(u), c = 0; c < u; c++) l[c] = arguments[c];
-            return n = r = i(this, (e = t.__proto__ || Object.getPrototypeOf(t)).call.apply(e, [ this ].concat(l))), 
+            for (var s = arguments.length, c = Array(s), f = 0; f < s; f++) c[f] = arguments[f];
+            return n = r = i(this, (e = t.__proto__ || Object.getPrototypeOf(t)).call.apply(e, [ this ].concat(c))), 
             r.translate = function(e) {
                 return r.context.d2.i18n.getTranslation(e);
             }, r.getAttributes = function(e, t) {
-                return e.map(function(e) {
-                    return {
-                        label: r.translate(e),
-                        value: t[e]
-                    };
-                }).filter(function(e) {
-                    return void 0 !== e.value;
-                });
+                return e.reduce(function(e, n) {
+                    var o = "object" === (void 0 === n ? "undefined" : u(n)) ? t[n.label] : t[n];
+                    return o ? ("object" === (void 0 === n ? "undefined" : u(n)) ? e.push({
+                        label: r.translate(n.label),
+                        value: n.getDisplayValue(o, r.context.d2, r.translate)
+                    }) : e.push({
+                        label: r.translate(n),
+                        value: o
+                    }), e) : e;
+                }, []);
             }, r.render = function() {
-                var e = r.context.d2, t = r.getAttributes(p.systemInfo, e.system.systemInfo), n = r.getAttributes(p.databaseInfo, e.system.systemInfo.databaseInfo);
-                return s.default.createElement("div", {
+                var e = r.context.d2, t = r.getAttributes(y.systemInfo, e.system.systemInfo), n = r.getAttributes(y.databaseInfo, e.system.systemInfo.databaseInfo);
+                return l.default.createElement("div", {
                     className: "content-area"
-                }, t.length > 0 && s.default.createElement(d.default, {
+                }, t.length > 0 && l.default.createElement(p.default, {
                     header: r.translate("system_info"),
                     attributes: t
-                }), n.length > 0 && s.default.createElement(d.default, {
+                }), n.length > 0 && l.default.createElement(p.default, {
                     header: r.translate("database"),
                     attributes: n
                 }));
             }, a = n, i(r, a);
         }
         return a(t, e), t;
-    }(u.Component);
-    h.contextTypes = {
-        d2: c.default.object.isRequired
-    }, t.default = h;
+    }(s.Component);
+    v.contextTypes = {
+        d2: f.default.object.isRequired
+    }, t.default = v;
 }, function(e, t, n) {
     "use strict";
     function r(e) {
@@ -69390,7 +69439,7 @@
         header: u.default.string.isRequired,
         attributes: u.default.arrayOf(u.default.shape({
             label: u.default.string.isRequired,
-            value: u.default.oneOfType([ u.default.string, u.default.number ])
+            value: u.default.node
         })).isRequired
     }, t.default = h;
 }, function(e, t, n) {
