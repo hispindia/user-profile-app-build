@@ -69375,14 +69375,17 @@
                 return r.context.d2.i18n.getTranslation(e);
             }, r.getAttributes = function(e, t) {
                 return e.reduce(function(e, n) {
-                    var o = "object" === (void 0 === n ? "undefined" : u(n)) ? t[n.label] : t[n];
-                    return o ? ("object" === (void 0 === n ? "undefined" : u(n)) ? e.push({
-                        label: r.translate(n.label),
-                        value: n.getDisplayValue(o, r.context.d2, r.translate)
-                    }) : e.push({
+                    if ("object" === (void 0 === n ? "undefined" : u(n))) {
+                        var o = n.getDisplayValue(t[n.label], r.context.d2, r.translate);
+                        o && e.push({
+                            label: r.translate(n.label),
+                            value: o
+                        });
+                    } else t[n] && e.push({
                         label: r.translate(n),
-                        value: o
-                    }), e) : e;
+                        value: t[n]
+                    });
+                    return e;
                 }, []);
             }, r.render = function() {
                 var e = r.context.d2, t = r.getAttributes(y.systemInfo, e.system.systemInfo), n = r.getAttributes(y.databaseInfo, e.system.systemInfo.databaseInfo);
