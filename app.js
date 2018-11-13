@@ -68445,7 +68445,11 @@
             var n = this;
             i(this, t);
             var r = a(this, (t.__proto__ || Object.getPrototypeOf(t)).call(this, e));
-            return r.onFileSelect = function() {
+            return r.getInputRef = function() {
+                return r.inputRef;
+            }, r.setInputRef = function(e) {
+                return r.inputRef = e;
+            }, r.onFileSelect = function() {
                 var e = o(regeneratorRuntime.mark(function e(t) {
                     var o, i, a, u, s, l, c;
                     return regeneratorRuntime.wrap(function(e) {
@@ -68494,13 +68498,13 @@
                     target: {
                         value: null
                     }
-                }), r.setState({
+                }), r.getInputRef().value = null, r.setState({
                     avatarSrc: null
                 });
             }, r.api = e.d2.Api.getApi(), r.userId = e.currentUser.id, r.state = {
                 avatarSrc: e.currentUser.avatar ? r.parseAvatarSrc(e.currentUser.avatar.id) : null,
                 loading: !1
-            }, r;
+            }, r.inputRef = null, r;
         }
         return u(t, e), s(t, [ {
             key: "parseAvatarSrc",
@@ -68549,8 +68553,9 @@
                         display: "none"
                     },
                     type: "file",
-                    accept: "image/*"
-                })), c.default.createElement(v.default, {
+                    accept: "image/*",
+                    ref: this.setInputRef
+                })), r && c.default.createElement(v.default, {
                     icon: c.default.createElement(_.default, null),
                     label: e.i18n.getTranslation("remove_avatar"),
                     onClick: this.onRemoveIcon
