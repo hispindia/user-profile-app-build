@@ -25277,7 +25277,28 @@
             default: e
         };
     }
-    function o(e, t, n) {
+    function o(e) {
+        return function() {
+            var t = e.apply(this, arguments);
+            return new Promise(function(e, n) {
+                function r(o, i) {
+                    try {
+                        var a = t[o](i), u = a.value;
+                    } catch (e) {
+                        return void n(e);
+                    }
+                    if (!a.done) return Promise.resolve(u).then(function(e) {
+                        r("next", e);
+                    }, function(e) {
+                        r("throw", e);
+                    });
+                    e(u);
+                }
+                return r("next");
+            });
+        };
+    }
+    function i(e, t, n) {
         return t in e ? Object.defineProperty(e, t, {
             value: n,
             enumerable: !0,
@@ -25285,10 +25306,14 @@
             writable: !0
         }) : e[t] = n, e;
     }
+    function a(e, t, n, r, o) {
+        var i = o.Api.getApi();
+        return "avatar" === e ? t ? i.patch("/users/" + r, n) : s(r, i) : i.update("me", n);
+    }
     Object.defineProperty(t, "__esModule", {
         value: !0
     });
-    var i = function() {
+    var u = function() {
         function e(e, t) {
             var n = [], r = !0, o = !1, i = void 0;
             try {
@@ -25310,35 +25335,56 @@
             if (Symbol.iterator in Object(t)) return e(t, n);
             throw new TypeError("Invalid attempt to destructure non-iterable instance");
         };
-    }(), a = n(25), u = r(a), s = n(116), l = n(153), c = r(l), f = n(67), d = r(f), p = n(79), h = r(p), y = n(322), v = r(y), m = n(320), b = n(1663), g = r(b);
-    m.wordToValidatorMap.set("whats_app", g.default);
-    var _ = c.default.createActionsFromNames([ "save" ]);
-    _.save.subscribe(function(e) {
-        var t = e.data, n = e.complete, r = e.error, a = i(t, 2), l = a[0], c = a[1], f = o({}, l, String(c).trim() || " ");
-        if ("birthday" === l) {
-            var p = new Date(c);
-            f = o({}, l, p.toISOString());
+    }(), s = function() {
+        var e = o(regeneratorRuntime.mark(function e(t, n) {
+            var r, o;
+            return regeneratorRuntime.wrap(function(e) {
+                for (;;) switch (e.prev = e.next) {
+                  case 0:
+                    return r = "/users/" + t, e.next = 3, n.get(r, {
+                        fields: ":owner"
+                    });
+
+                  case 3:
+                    return o = e.sent, delete o.avatar, e.abrupt("return", n.update(r, o));
+
+                  case 6:
+                  case "end":
+                    return e.stop();
+                }
+            }, e, this);
+        }));
+        return function(t, n) {
+            return e.apply(this, arguments);
+        };
+    }(), l = n(25), c = r(l), f = n(116), d = n(153), p = r(d), h = n(67), y = r(h), v = n(79), m = r(v), b = n(322), g = r(b), _ = n(320), w = n(1663), x = r(w);
+    _.wordToValidatorMap.set("whats_app", x.default);
+    var k = p.default.createActionsFromNames([ "save" ]);
+    k.save.subscribe(function(e) {
+        var t = e.data, n = e.complete, r = e.error, o = u(t, 2), s = o[0], l = o[1], d = i({}, s, String(l).trim() || " ");
+        if ("birthday" === s) {
+            var p = new Date(l);
+            d = i({}, s, p.toISOString());
         }
-        (0, s.getInstance)().then(function(e) {
-            if (h.default.state[l] = c, h.default.setState(h.default.state), Array.isArray(v.default[l].validators)) {
-                if (!v.default[l].validators.reduce(function(e, t) {
-                    return e && m.wordToValidatorMap.get(t)(c);
-                }, !0)) return void u.default.warn('One or more validators did not pass for field "' + l + '" and value "' + c + '"');
+        (0, f.getInstance)().then(function(e) {
+            if (m.default.state[s] = l, m.default.setState(m.default.state), Array.isArray(g.default[s].validators)) {
+                if (!g.default[s].validators.reduce(function(e, t) {
+                    return e && _.wordToValidatorMap.get(t)(l);
+                }, !0)) return void c.default.warn('One or more validators did not pass for field "' + s + '" and value "' + l + '"');
             }
-            var t = e.Api.getApi(), o = "avatar" === l ? "patch" : "update", i = "avatar" === l ? "/users/" + h.default.state.id : "me";
-            t[o](i, f).then(function() {
-                u.default.debug("User Profile updated successfully."), d.default.showSnackbarMessage({
+            a(s, l, d, m.default.state.id, e).then(function() {
+                c.default.debug("User Profile updated successfully."), y.default.showSnackbarMessage({
                     message: e.i18n.getTranslation("update_user_profile_success"),
                     status: "success"
                 }), n();
             }).catch(function(t) {
-                d.default.showSnackbarMessage({
+                y.default.showSnackbarMessage({
                     message: e.i18n.getTranslation("update_user_profile_fail"),
                     status: "error"
-                }), u.default.error("Failed to update user profile:", t), r();
+                }), c.default.error("Failed to update user profile:", t), r();
             });
         });
-    }), t.default = _;
+    }), t.default = k;
 }, function(e, t, n) {
     "use strict";
     function r(e) {
@@ -68399,7 +68445,11 @@
             var n = this;
             i(this, t);
             var r = a(this, (t.__proto__ || Object.getPrototypeOf(t)).call(this, e));
-            return r.onFileSelect = function() {
+            return r.getInputRef = function() {
+                return r.inputRef;
+            }, r.setInputRef = function(e) {
+                return r.inputRef = e;
+            }, r.onFileSelect = function() {
                 var e = o(regeneratorRuntime.mark(function e(t) {
                     var o, i, a, u, s, l, c;
                     return regeneratorRuntime.wrap(function(e) {
@@ -68448,13 +68498,13 @@
                     target: {
                         value: null
                     }
-                }), r.setState({
+                }), r.getInputRef().value = null, r.setState({
                     avatarSrc: null
                 });
             }, r.api = e.d2.Api.getApi(), r.userId = e.currentUser.id, r.state = {
                 avatarSrc: e.currentUser.avatar ? r.parseAvatarSrc(e.currentUser.avatar.id) : null,
                 loading: !1
-            }, r;
+            }, r.inputRef = null, r;
         }
         return u(t, e), s(t, [ {
             key: "parseAvatarSrc",
@@ -68503,8 +68553,9 @@
                         display: "none"
                     },
                     type: "file",
-                    accept: "image/*"
-                })), c.default.createElement(v.default, {
+                    accept: "image/*",
+                    ref: this.setInputRef
+                })), r && c.default.createElement(v.default, {
                     icon: c.default.createElement(_.default, null),
                     label: e.i18n.getTranslation("remove_avatar"),
                     onClick: this.onRemoveIcon
