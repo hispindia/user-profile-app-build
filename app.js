@@ -69390,6 +69390,7 @@
             getDisplayValue: function(e, t, n) {
                 return l.default.createElement("a", {
                     target: "_blank",
+                    rel: "noopener noreferrer",
                     href: t.system.systemInfo.contextPath + "/api"
                 }, n("browse_it_here"));
             }
