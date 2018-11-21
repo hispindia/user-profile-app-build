@@ -25308,7 +25308,9 @@
     }
     function a(e, t, n, r, o) {
         var i = o.Api.getApi();
-        return "avatar" === e ? t ? i.patch("/users/" + r, n) : s(r, i) : i.update("me", n);
+        return "avatar" === e ? t ? i.patch("/users/" + r, {
+            avatar: t.id
+        }) : s(r, i) : i.update("me", n);
     }
     Object.defineProperty(t, "__esModule", {
         value: !0
