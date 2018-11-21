@@ -69433,7 +69433,7 @@
                 return e.reduce(function(e, n) {
                     if ("object" === (void 0 === n ? "undefined" : u(n))) {
                         var o = n.getDisplayValue(t[n.label], r.context.d2, r.translate);
-                        o && e.push({
+                        (o || !1 === o) && e.push({
                             label: r.translate(n.label),
                             value: o
                         });
@@ -69490,7 +69490,7 @@
             return i.default.createElement(c.default, {
                 key: t,
                 label: t,
-                value: n
+                value: "boolean" == typeof n ? n.toString() : n
             });
         })))));
     };
@@ -69498,7 +69498,7 @@
         header: u.default.string.isRequired,
         attributes: u.default.arrayOf(u.default.shape({
             label: u.default.string.isRequired,
-            value: u.default.node
+            value: u.default.oneOfType([ u.default.node, u.default.bool ])
         })).isRequired
     }, t.default = h;
 }, function(e, t, n) {
